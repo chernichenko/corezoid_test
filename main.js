@@ -84,7 +84,7 @@ function generateRandomObject(schema) {
   return result;
 }
 
-// Examples 
+// Usage 
 
 const schema1 = {
   type: 'integer',
