@@ -84,7 +84,7 @@ function generateRandomObject(schema) {
   return result;
 }
 
-const generalSchema = {
+const exampleSchema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "http://example.com/product.schema.json",
   "title": "Product",
@@ -131,8 +131,8 @@ const generalSchema = {
   },
   "required": ["productId", "productName", "price"]
 }
-const formattedGeneralSchema = generateRandomData(generalSchema);
-console.log(formattedGeneralSchema);
+const formattedSchema = generateRandomData(exampleSchema);
+console.log(formattedSchema);
 
 
 module.exports = { generateRandomData };
