@@ -5,24 +5,24 @@
  */
 function generateRandomData(schema) {
   if (!schema || typeof schema !== 'object') {
-      throw new Error('Invalid schema provided');
+    throw new Error('Invalid schema provided');
   }
 
   switch (schema.type) {
-      case 'integer':
-          return generateRandomInteger(schema);
-      case 'number':
-          return generateRandomNumber(schema);
-      case 'string':
-          return generateRandomString(schema);
-      case 'boolean':
-          return Math.random() < 0.5;
-      case 'array':
-          return generateRandomArray(schema);
-      case 'object':
-          return generateRandomObject(schema);
-      default:
-          throw new Error(`Unsupported schema type: ${schema.type}`);
+    case 'integer':
+      return generateRandomInteger(schema);
+    case 'number':
+      return generateRandomNumber(schema);
+    case 'string':
+      return generateRandomString(schema);
+    case 'boolean':
+      return Math.random() < 0.5;
+    case 'array':
+      return generateRandomArray(schema);
+    case 'object':
+      return generateRandomObject(schema);
+    default:
+      throw new Error(`Unsupported schema type: ${schema.type}`);
   }
 }
 
@@ -61,10 +61,10 @@ function generateRandomArray(schema) {
   const unique = schema.uniqueItems ?? false;
   const result = [];
   while (result.length < length) {
-      const item = generateRandomData(itemsSchema);
-      if (!unique || !result.includes(item)) {
-          result.push(item);
-      }
+    const item = generateRandomData(itemsSchema);
+    if (!unique || !result.includes(item)) {
+      result.push(item);
+    }
   }
   return result;
 }
@@ -76,138 +76,63 @@ function generateRandomObject(schema) {
   const required = schema.required || [];
 
   Object.entries(properties).forEach(([key, valueSchema]) => {
-      if (required.includes(key) || Math.random() > 0.5) {
-          result[key] = generateRandomData(valueSchema);
-      }
+    if (required.includes(key) || Math.random() > 0.5) {
+      result[key] = generateRandomData(valueSchema);
+    }
   });
 
   return result;
 }
 
-// Usage 
-
-const schema1 = {
-  type: 'integer',
-  minimum: 5,
-  maximum: 15
-};
-
-const randomInteger = generateRandomData(schema1);
-console.log(randomInteger);
-
-const schema2 = {
-  type: 'string',
-  minLength: 3,
-  maxLength: 8
-};
-
-const randomString = generateRandomData(schema2);
-console.log(randomString);
-
-const schema3 = {
-  type: 'boolean'
-};
-
-const randomBoolean = generateRandomData(schema3);
-console.log(randomBoolean);
-
-const schema4 = {
-  type: 'array',
-  minItems: 3,
-  maxItems: 5,
-  items: {
-      type: 'integer',
-      minimum: 1,
-      maximum: 10
-  }
-};
-
-const randomArray = generateRandomData(schema4);
-console.log(randomArray);
-
-const schema5 = {
-  type: 'object',
-  properties: {
-      name: { type: 'string', minLength: 4, maxLength: 10 },
-      age: { type: 'integer', minimum: 18, maximum: 60 },
-      isActive: { type: 'boolean' }
-  },
-  required: ['name', 'age']
-};
-
-const randomObject = generateRandomData(schema5);
-console.log(randomObject);
-
-const schema6 = {
-  type: 'object',
-  properties: {
-      user: {
-          type: 'object',
-          properties: {
-              id: { type: 'integer', minimum: 1000, maximum: 9999 },
-              username: { type: 'string', minLength: 5, maxLength: 12 }
-          },
-          required: ['id', 'username']
+const generalSchema = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/product.schema.json",
+  "title": "Product",
+  "description": "A product from Acme's catalog",
+  "type": "object",
+  "properties": {
+    "productId": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "productName": {
+      "description": "Name of the product",
+      "type": "string"
+    },
+    "price": {
+      "description": "The price of the product",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "tags": {
+      "description": "Tags for the product",
+      "type": "array",
+      "items": {
+        "type": "string"
       },
-      status: { type: 'string', enum: ['active', 'inactive', 'suspended'] }
-  },
-  required: ['user']
-};
-
-const nestedObject = generateRandomData(schema6);
-console.log(nestedObject);
-
-const schema7 = {
-  type: 'array',
-  minItems: 3,
-  maxItems: 6,
-  uniqueItems: true,
-  items: {
-      type: 'integer',
-      minimum: 1,
-      maximum: 20
-  }
-};
-
-const uniqueArray = generateRandomData(schema7);
-console.log(uniqueArray);
-
-const schema8 = {
-  type: 'array',
-  minItems: 2,
-  maxItems: 4,
-  items: {
-      type: 'object',
-      properties: {
-          title: { type: 'string', minLength: 3, maxLength: 10 },
-          completed: { type: 'boolean' }
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
       },
-      required: ['title']
-  }
-};
-
-const randomArrayObjects = generateRandomData(schema8);
-console.log(randomArrayObjects);
-
-const schema9 = {
-  type: 'string',
-  enum: ['red', 'green', 'blue', 'yellow']
-};
-
-const randomEnum = generateRandomData(schema9);
-console.log(randomEnum);
-
-const schema10 = {
-  type: 'object',
-  properties: {
-      firstName: { type: 'string', minLength: 3 },
-      lastName: { type: 'string', minLength: 3 },
-      age: { type: 'integer', minimum: 18, maximum: 80 }
+      "required": ["length", "width", "height"]
+    }
   },
-  required: ['firstName']
-};
+  "required": ["productId", "productName", "price"]
+}
+const formattedGeneralSchema = generateRandomData(generalSchema);
+console.log(formattedGeneralSchema);
 
-const optionalPropsObject = generateRandomData(schema10);
-console.log(optionalPropsObject);
 
 module.exports = { generateRandomData };
