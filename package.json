@@ -1,0 +1,15 @@
+{
+  "name": "corezoid-test",
+  "version": "1.0.0",
+  "description": "## Overview This utility generates random data objects conforming to a given JSON Schema. The implementation adheres to constraints defined within the schema, such as data types, min/max values, required properties, and more.",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
